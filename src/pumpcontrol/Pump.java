@@ -66,6 +66,35 @@ public class Pump implements SerialPortPacketListener {
         this.initialize();
     }
     
+    public void runVolume(int volume) {
+        this.initiate();
+
+        int[] parameters = calPumpCycAndVol(volume);
+        for (int i = 0; i < parameters[0]; i++) {
+            this.flipToSolution();
+            this.setPosition(Pump.RESOLUTION);
+            this.flipToWaster();
+            this.dispose(Pump.RESOLUTION);
+
+        }
+        if (parameters[1] > 0) {
+            this.flipToSolution();
+            this.setPosition(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
+            this.flipToWaster();
+            this.dispose(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
+        }
+        this.getReady();
+    }
+    
+    private int[] calPumpCycAndVol(int volume) {
+        int[] result = new int[2];
+        int numCyc = volume / Pump.MAX_VOL;
+        int remainder = volume % Pump.MAX_VOL;
+        result[0] = numCyc;
+        result[1] = remainder;
+        return result;
+    }
+    
     // terminate the connection between pump and computer
     public void quit() {
         pumpPort.closePort();

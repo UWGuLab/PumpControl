@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class GUI extends javax.swing.JFrame {
 
-    //values for the fileds
+    //values for the fields
     private int amount = 0;
 
     //fileds for data entry
@@ -45,12 +45,11 @@ public class GUI extends javax.swing.JFrame {
 
         jScrollPane3 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
-        amountFormat = NumberFormat.getNumberInstance();
-        volumnTextField = new javax.swing.JFormattedTextField(amountFormat);
+        jOptionPane1 = new javax.swing.JOptionPane();
         jLabel_volume_chemical = new javax.swing.JLabel();
         startBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea_output = new javax.swing.JTextArea();
+        outputTextArea = new javax.swing.JTextArea();
         jLabel_output = new javax.swing.JLabel();
         pump1CheckBox = new javax.swing.JCheckBox();
         pump2CheckBox = new javax.swing.JCheckBox();
@@ -61,6 +60,9 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         pump2SpeedList = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        volume2TextField = new javax.swing.JTextField();
+        volume1TextField = new javax.swing.JTextField();
 
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -71,17 +73,7 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        volumnTextField.setValue(new Integer(amount));
-        volumnTextField.setText("0");
-        volumnTextField.setPreferredSize(new java.awt.Dimension(60, 30));
-        amountFormat = NumberFormat.getNumberInstance();
-        volumnTextField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                volumnTextFieldPropertyChange(evt);
-            }
-        });
-
-        jLabel_volume_chemical.setText("volume of chemical to add ( in uL)");
+        jLabel_volume_chemical.setText("Pump 1 Volume (uL)");
 
         startBtn.setText("Start");
         startBtn.setPreferredSize(new java.awt.Dimension(100, 100));
@@ -91,10 +83,10 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jTextArea_output.setEditable(false);
-        jTextArea_output.setColumns(20);
-        jTextArea_output.setRows(5);
-        jScrollPane1.setViewportView(jTextArea_output);
+        outputTextArea.setEditable(false);
+        outputTextArea.setColumns(20);
+        outputTextArea.setRows(5);
+        jScrollPane1.setViewportView(outputTextArea);
 
         jLabel_output.setText("Output");
 
@@ -131,6 +123,17 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setText("Pump 2 Speed (uL/s)");
 
+        jLabel4.setText("Pump 2 Volume (uL)");
+
+        volume2TextField.setText("0");
+
+        volume1TextField.setText("0");
+        volume1TextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volume1TextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,51 +147,56 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel_output)
+                            .addComponent(pump1CheckBox)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(volume1TextField)
+                                    .addComponent(jLabel_volume_chemical, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                                .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pump1CheckBox)
-                                    .addComponent(pump2CheckBox)
-                                    .addComponent(jLabel2)
-                                    .addComponent(volumnTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel_volume_chemical, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(volume2TextField)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                                    .addComponent(pump2CheckBox))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane4)))
-                    .addComponent(jLabel_output))
+                            .addComponent(jScrollPane4))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pump1CheckBox)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pump1CheckBox)
+                            .addComponent(pump2CheckBox))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel_volume_chemical, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pump2CheckBox)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel_volume_chemical, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(volumnTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                        .addComponent(jLabel_output)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(volume2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(volume1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(jLabel_output)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(startBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
@@ -208,52 +216,65 @@ public class GUI extends javax.swing.JFrame {
             System.out.println("port " + i + ": " + ports[i].getSystemPortName());
             portsNames.add(ports[i].getSystemPortName());
         }
+        portsNames.add("None");
         
         // Instantiate the first pump connection with PC
-        // Asks the user for input for which port to use
-        try (Scanner input = new Scanner(System.in)) {
-            
-            boolean pump1Used = false;
-            int numOfPort = 0;
-            
-            if (pump1CheckBox.isSelected()) {
-                
-                System.out.println("Please select the port for the first pump");
-                String userport = input.next();
+        // Asks the user for input for which port to use            
+        boolean pump1Used = false;
+        String userport = "";
+        if (pump1CheckBox.isSelected()) {
 
-                // make sure user select the correct port name
-                while (!portsNames.contains(userport)) {
-                    System.out.println("Invalid input, please select the port for the first pump: ");
-                    userport = input.next();
-                }
-                numOfPort = portsNames.indexOf(userport);
+            //Custom button text
+            userport = (String)jOptionPane1.showInputDialog(
+                 this,
+                 "Please select the port for the first pump.",
+                 "Pump 1 Port Selection",
+                 jOptionPane1.PLAIN_MESSAGE,
+                 null,
+                 portsNames.toArray(),
+                 "None");
+
+            if (userport.equals("None")) {
+                the_pump_1 = null;
+            } else {
+                int numOfPort = portsNames.indexOf(userport);
                 the_pump_1 = new Pump(ports[numOfPort]);
                 pump1Used = true;
                 the_pump_1.setMaxSpeed((int) (new Double(pump1SpeedList.getSelectedValue()) / Pump.MAX_VOL * Pump.RESOLUTION));
-            } else {
-                the_pump_1 = null;
+                outputTextArea.append("The " + userport + " pump port for Pump 1 has opened.\n");
             }
-
-            if (pump2CheckBox.isSelected()) {
-
-                // Instantiate the second pump the connection with PC
-                // Asks the user for input for which port to use
-                System.out.println("Please select the port for the second pump");
-                String userport = input.next();
-
-                // make sure user select the correct port name and the port is not being used
-                while (!portsNames.contains(userport) || (pump1Used && userport.equals(ports[numOfPort].getSystemPortName()))) {
-                    System.out.println("Invalid input, please select the port for the second pump:");
-                    userport = input.next();
-                }
-                input.close();
-                numOfPort = portsNames.indexOf(userport);
-                the_pump_2 = new Pump(ports[numOfPort]);
-                the_pump_2.setMaxSpeed((int) (new Double(pump2SpeedList.getSelectedValue()) / Pump.MAX_VOL * Pump.RESOLUTION));
-            } else {
-                the_pump_2 = null;
-            }
+        } else {
+            the_pump_1 = null;
         }
+
+        if (pump2CheckBox.isSelected()) {
+
+            // Instantiate the second pump the connection with PC
+            // Asks the user for input for which port to use
+            if (pump1Used && !userport.equals("None")) {
+                portsNames.remove(userport);
+            }
+            userport = (String)jOptionPane1.showInputDialog(
+                 this,
+                 "Please select the port for the second pump.",
+                 "Pump 2 Port Selection",
+                 jOptionPane1.PLAIN_MESSAGE,
+                 null,
+                 portsNames.toArray(),
+                 "None");
+
+            if (userport.equals("None")) {
+                the_pump_2 = null;
+            } else {                    
+                int numOfPort = portsNames.indexOf(userport);
+                the_pump_2 = new Pump(ports[numOfPort]);
+                outputTextArea.append("The " + userport + " pump port for Pump 2 has opened.\n");
+                the_pump_2.setMaxSpeed((int) (new Double(pump2SpeedList.getSelectedValue()) / Pump.MAX_VOL * Pump.RESOLUTION));
+            }
+        } else {
+            the_pump_2 = null;
+        }
+
     }
 
     private void startBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startBtnMouseClicked
@@ -262,124 +283,57 @@ public class GUI extends javax.swing.JFrame {
             //record start time
             long startTime = System.currentTimeMillis();
             
-            setPump();
-            runForOneCycle(amount);
+            setPump(); 
+            runForOneCycle(new Integer(volume1TextField.getText()), new Integer(volume2TextField.getText()));
             
             long estimatedTime = System.currentTimeMillis() - startTime;
             int minutes = (int) (estimatedTime/60000);
             int seconds = (int) estimatedTime/1000 - minutes * 60;
-            jTextArea_output.append("time used: " + minutes + " minutes, " + seconds + " seconds." + "\n");
+            outputTextArea.append("Time used: " + minutes + " minutes, " + seconds + " seconds." + "\n");
+            if (the_pump_1 != null) {
+                the_pump_1.quit();
+            }
+            if (the_pump_2 != null) {
+                the_pump_2.quit();
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_startBtnMouseClicked
 
-    private void volumnTextFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_volumnTextFieldPropertyChange
-        Object source = evt.getSource();
-        if (source == volumnTextField) {
-            try {
-                amount = Integer.parseInt(volumnTextField.getText());
-            } catch (NumberFormatException e) {
-                System.out.println("Must enter an integer");
-            }
-        }
-    }//GEN-LAST:event_volumnTextFieldPropertyChange
-
     private void pump1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pump1CheckBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pump1CheckBoxActionPerformed
 
-    public void runForOneCycle(int volume) throws InterruptedException {
+    private void volume1TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volume1TextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_volume1TextFieldActionPerformed
+
+    public void runForOneCycle(int volume1, int volume2) throws InterruptedException {
 
         //get start
         if (the_pump_1 == null && the_pump_2 == null) {
             
         } else if (the_pump_1 == null) {
             
-            the_pump_2.initiate();
-
-            int[] parameters = calPumpCycAndVol(volume);
-            for (int i = 0; i < parameters[0]; i++) {
-                the_pump_2.flipToSolution();
-                the_pump_2.setPosition(Pump.RESOLUTION);
-                the_pump_2.flipToWaster();
-                the_pump_2.dispose(Pump.RESOLUTION);
-
-            }
-            if (parameters[1] > 0) {
-                the_pump_2.flipToSolution();
-                the_pump_2.setPosition(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-                the_pump_2.flipToWaster();
-                the_pump_2.dispose(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-            }
-            the_pump_2.getReady();
+            the_pump_2.runVolume(volume2);
             
         } else if (the_pump_2 == null) {
             
-            the_pump_1.initiate();
-
-            int[] parameters = calPumpCycAndVol(volume);
-            for (int i = 0; i < parameters[0]; i++) {
-                the_pump_1.flipToSolution();
-                the_pump_1.setPosition(Pump.RESOLUTION);
-                the_pump_1.flipToWaster();
-                the_pump_1.dispose(Pump.RESOLUTION);
-            }
-            if (parameters[1] > 0) {
-                the_pump_1.flipToSolution();
-                the_pump_1.setPosition(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-                the_pump_1.flipToWaster();
-                the_pump_1.dispose(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-
-            }
-            the_pump_1.getReady();
+            the_pump_1.runVolume(volume1);
+            
         } else {
             
-            the_pump_1.initiate();
-            the_pump_2.initiate();
-
-            int[] parameters = calPumpCycAndVol(volume);
-            for (int i = 0; i < parameters[0]; i++) {
-                the_pump_1.flipToSolution();
-                the_pump_2.flipToSolution();
-
-                the_pump_1.setPosition(Pump.RESOLUTION);
-                the_pump_2.setPosition(Pump.RESOLUTION);
-
-                the_pump_1.flipToWaster();
-                the_pump_2.flipToWaster();
-
-                the_pump_1.dispose(Pump.RESOLUTION);
-                the_pump_2.dispose(Pump.RESOLUTION);
-
-            }
-            if (parameters[1] > 0) {
-                the_pump_1.flipToSolution();
-                the_pump_2.flipToSolution();
-
-                the_pump_1.setPosition(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-                the_pump_2.setPosition(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-
-                the_pump_1.flipToWaster();
-                the_pump_2.flipToWaster();
-
-                the_pump_1.dispose(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-                the_pump_2.dispose(parameters[1] * Pump.RESOLUTION / Pump.MAX_VOL);
-
-            }
-            the_pump_1.getReady();
-            the_pump_2.getReady();
+            (new Thread() {
+                @Override
+                public void run() {
+                    the_pump_1.runVolume(volume1);
+                }
+            }).start();
+            the_pump_2.runVolume(volume2);
+            
         }
         
-    }
-
-    private int[] calPumpCycAndVol(int volume) {
-        int[] result = new int[2];
-        int numCyc = volume / Pump.MAX_VOL;
-        int remainder = volume % Pump.MAX_VOL;
-        result[0] = numCyc;
-        result[1] = remainder;
-        return result;
     }
 
     /**
@@ -415,19 +369,22 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel_output;
     private javax.swing.JLabel jLabel_volume_chemical;
     private javax.swing.JList<String> jList2;
+    private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea_output;
+    private javax.swing.JTextArea outputTextArea;
     private javax.swing.JCheckBox pump1CheckBox;
     private javax.swing.JList<String> pump1SpeedList;
     private javax.swing.JCheckBox pump2CheckBox;
     private javax.swing.JList<String> pump2SpeedList;
     private javax.swing.JButton startBtn;
-    private javax.swing.JFormattedTextField volumnTextField;
+    private javax.swing.JTextField volume1TextField;
+    private javax.swing.JTextField volume2TextField;
     // End of variables declaration//GEN-END:variables
 }
